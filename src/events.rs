@@ -212,7 +212,7 @@ impl Events {
                 true => get_display_flag(event_num, header_block),
                 false => true,
             };
-            let time = verify_time(event_num, header_block, &times, processor)?;
+            let time = get_event_time(event_num, &times)?;
             let context = get_event_context(event_num, &contexts);
             let description = get_event_description(event_num, &descriptions);
             let subject = get_event_subject(event_num, &subjects);
@@ -532,15 +532,11 @@ fn get_generic_flags_array(parameters: &mut Parameters) -> Vec<i16> {
     }
 }
 
-fn verify_time(
+fn get_event_time(
     event_num: usize,
-    header_block: &[u8; 512],
-    _time: &Vec<[f32; 2]>,
-    processor: &Processor,
+    time: &Vec<[f32; 2]>,
 ) -> Result<f32, C3dParseError> {
-    let time_start = 304 + (event_num * 4);
-    Ok(processor.f32(header_block[time_start..time_start + 4].try_into().unwrap()))
-    // TODO: use time
+    Ok(time[event_num][1]) // [0] is start, [1] is end
 }
 
 fn get_event_id(event_num: usize, header_block: &[u8; 512]) -> Result<[char; 4], C3dParseError> {
