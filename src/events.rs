@@ -454,7 +454,7 @@ fn get_times_array(parameters: &mut Parameters) -> Result<Vec<[f32; 2]>, C3dPars
             ParameterData::Float(data) => {
                 if parameter.dimensions.len() == 2 && data.len() > 1 {
                     let mut times = Vec::new();
-                    for row in 0..data.len() % 2 {
+                    for row in 0..data.len() / 2 {
                         let mut time = [0.0; 2];
                         time[0] = data[row * 2];
                         time[1] = data[row * 2 + 1];
