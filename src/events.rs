@@ -212,7 +212,11 @@ impl Events {
                 true => get_display_flag(event_num, header_block),
                 false => true,
             };
-            let time = get_event_time(event_num, &times)?;
+            let get_time = get_event_time(event_num, &times);
+            if get_time.is_err() {
+                continue;
+            }
+            let time = get_time.unwrap();
             let context = get_event_context(event_num, &contexts);
             let description = get_event_description(event_num, &descriptions);
             let subject = get_event_subject(event_num, &subjects);
