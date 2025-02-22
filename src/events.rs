@@ -536,6 +536,10 @@ fn get_event_time(
     event_num: usize,
     time: &Vec<[f32; 2]>,
 ) -> Result<f32, C3dParseError> {
+    if event_num >= time.len() {
+        return Err(C3dParseError::NoParameterTimeEvents);
+    }
+
     Ok(time[event_num][1]) // [0] is start, [1] is end
 }
 
